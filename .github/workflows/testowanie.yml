@@ -1,0 +1,21 @@
+name: Iteruj po gałęziach
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: linie kodu
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Pobierz gałęzie
+        uses: actions/checkout@v2
+
+      - name: wykonj Iterowanie
+        uses: github/test@v3
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
