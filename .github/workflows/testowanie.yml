@@ -1,18 +1,37 @@
-name: Super-Linter
+name: Budowanie .exe
 
-on: push
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 0 * * 0" # Uruchomienie raz w tygodniu o północy w niedzielę
+  workflow_dispatch:
 
 jobs:
-  super-lint:
-    name: linie kodu
-    runs-on: ubuntu-latest
-  
+  build:
+    runs-on: windows-latest
+    
     steps:
-      - name: Pobierz gałęzie
-        uses: actions/checkout@v2
+    - name: Sprawdź repozytorium
+      uses: actions/checkout@v2
 
-      - name: wykonj Iterowanie
-        uses: github/super-linter@v3
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Skonfiguruj Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.x" # Wybierz odpowiednią wersję Pythona
+
+    - name: Zainstaluj zależności
+      run: |
+        pip install -r requirements.txt
+        # Dodaj tutaj inne komendy instalacyjne, jeśli są potrzebne
+
+    - name: Zbuduj plik .exe
+      run: |
+        # Dodaj tutaj komendy budujące plik .exe, np.:
+        # python build.py
+
+    - name: Prześlij plik .exe
+      uses: actions/upload-artifact@v3
+      with:
+        name: wygenerowany-plik
